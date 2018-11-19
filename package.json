@@ -1,0 +1,36 @@
+{
+  "name": "disney-fiscal-calendar",
+  "version": "0.1.0",
+  "description": "A library for working with Disney fiscal calendar dates",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "npx coffee --bare --output ./dist ./src",
+    "test": "ava",
+    "test:watch": "ava --watch"
+  },
+  "author": "Geoffrey Booth <geoffrey.booth@disney.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@date/holidays-us": "^0.4.0",
+    "coffeescript": "^2.3.2",
+    "luxon": "^1.6.2"
+  },
+  "devDependencies": {
+    "ava": "1.0.0-rc.2"
+  },
+  "ava": {
+    "compileEnhancements": false,
+    "extensions": [
+      "coffee"
+    ],
+    "require": [
+      "coffeescript/register"
+    ],
+    "files": [
+      "tests/**/*.coffee"
+    ],
+    "sources": [
+      "src/**/*.coffee"
+    ]
+  }
+}
