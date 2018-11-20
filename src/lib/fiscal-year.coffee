@@ -1,5 +1,5 @@
 { DateTime, Interval } = require 'luxon' # https://moment.github.io/luxon/index.html
-Holidays = require '@date/holidays-us' # https://github.com/elidoran/node-date-holidays
+Holidays = require '@date/holidays-us' # https://github.com/elidoran/node-date-holidays-us
 
 FiscalYearHelpers = require './fiscal-year-helpers'
 
@@ -163,3 +163,19 @@ module.exports = class FiscalYear
 
 	getQuarters: ->
 		[1..4].map (quarter) => @getQuarterInterval quarter
+
+
+	getHolidays: ->
+		return @cache.holidays if @cache.holidays
+
+		holidays = []
+		# https://github.com/elidoran/node-date-holidays-us#api-generators
+		for day in ['newYearsDay', 'martinLutherKingDay', 'presidentsDay', 'memorialDay', 'independenceDay', 'laborDay', 'thanksgiving', 'dayAfterThankgsiving', 'christmas']
+			if day is 'dayAfterThankgsiving'
+				date = holidays[6].plus days: 1
+			else
+				date = Holidays[day](@fiscalYear)
+				date = date.observed if date.observed
+				date = DateTime.fromJSDate date
+			holidays.push date
+		@cache.holidays = holidays
