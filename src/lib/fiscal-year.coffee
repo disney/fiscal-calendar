@@ -37,6 +37,7 @@ module.exports = class FiscalYear
 			day: 30
 		).endOf 'day'
 
+
 	getPreviousFiscalYearEnd: ->
 		return @cache.previousFiscalYearEnd if @cache.previousFiscalYearEnd
 		@cache.previousFiscalYearEnd = FiscalYearHelpers.nearestSaturday(DateTime.fromObject
@@ -44,6 +45,7 @@ module.exports = class FiscalYear
 			month: 9 # September
 			day: 30
 		).endOf 'day'
+
 
 	getFiscalYearStart: ->
 		return @cache.fiscalYearStart if @cache.fiscalYearStart
@@ -60,10 +62,13 @@ module.exports = class FiscalYear
 		@cache.numberOfWeeks = Math.round(@getFiscalYearInterval().length('days') / 7)
 
 
-	getFiscalMonthEnd: (month) ->
+	_validateMonth: (month) ->
 		unless month in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 			throw new Error 'Month must be an integer between 1 and 12 (inclusive)'
 
+
+	getFiscalMonthEnd: (month) ->
+		@_validateMonth month
 		return @cache.fiscalMonthEnd["#{month}"] if @cache.fiscalMonthEnd["#{month}"]
 
 		# See README.md for an explanation of Disney’s fiscal months, which have set numbers of weeks (mostly)
@@ -93,10 +98,9 @@ module.exports = class FiscalYear
 			when 12 # Month 12, mostly overlapping with September, is 5 weeks long in a 52-week fiscal year or 6 weeks long in a 53-week fiscal year
 				@getFiscalYearEnd()
 
-	getFiscalMonthStart: (month) ->
-		unless month in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-			throw new Error 'Month must be an integer between 1 and 12 (inclusive)'
 
+	getFiscalMonthStart: (month) ->
+		@_validateMonth month
 		return @cache.fiscalMonthStart["#{month}"] if @cache.fiscalMonthStart["#{month}"]
 
 		@cache.fiscalMonthStart["#{month}"] = switch month
@@ -106,10 +110,20 @@ module.exports = class FiscalYear
 				@getFiscalMonthEnd(month - 1).plus days: 1
 
 
-	getQuarterEnd: (quarter) ->
+	getFiscalMonthInterval: (month) ->
+		@_validateMonth month
+		return @cache.fiscalMonthInterval["#{month}"] if @cache.fiscalMonthInterval["#{month}"]
+
+		@cache.fiscalMonthInterval["#{month}"] = Interval.fromDateTimes @getFiscalMonthStart(month), @getFiscalMonthEnd(month)
+
+
+	_validateQuarter: (quarter) ->
 		unless quarter in [1, 2, 3, 4]
 			throw new Error 'Quarter must be an integer: 1 or 2 or 3 or 4'
 
+
+	getQuarterEnd: (quarter) ->
+		@_validateQuarter quarter
 		return @cache.quarterEnd["#{quarter}"] if @cache.quarterEnd["#{quarter}"]
 
 		# See README.md for an explanation of Disney’s fiscal months, which have set numbers of weeks (mostly)
@@ -124,10 +138,9 @@ module.exports = class FiscalYear
 			when 4
 				@cache.quarterEnd["#{quarter}"] = @getFiscalYearEnd()
 
-	getQuarterStart: (quarter) ->
-		unless quarter in [1, 2, 3, 4]
-			throw new Error 'Quarter must be an integer: 1 or 2 or 3 or 4'
 
+	getQuarterStart: (quarter) ->
+		@_validateQuarter quarter
 		return @cache.quarterStart["#{quarter}"] if @cache.quarterStart["#{quarter}"]
 
 		@cache.quarterStart["#{quarter}"] = switch quarter
@@ -135,3 +148,10 @@ module.exports = class FiscalYear
 				@getFiscalYearStart()
 			else
 				@getQuarterEnd(quarter - 1).plus days: 1
+
+
+	getQuarterInterval: (quarter) ->
+		@_validateQuarter quarter
+		return @cache.quarterInterval["#{quarter}"] if @cache.quarterInterval["#{quarter}"]
+
+		@cache.quarterInterval["#{quarter}"] = Interval.fromDateTimes @getQuarterStart(quarter), @getQuarterEnd(quarter)

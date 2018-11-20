@@ -143,6 +143,23 @@ test 'fiscal month start dates', (t) =>
 			t.is fy.getFiscalMonthStart(month + 1).toISODate(), date
 
 
+test 'fiscal month interval', (t) =>
+	# Dates to compare against are per the PDF in docs/
+	fy2001 = new FiscalYear 2001
+	fy2015 = new FiscalYear 2015
+	t.is fy2001.getFiscalMonthInterval(1).start.toISODate(), '2000-10-01'
+	t.is fy2001.getFiscalMonthInterval(1).end.toISODate(), '2000-10-28'
+	t.is fy2001.getFiscalMonthInterval(2).start.toISODate(), '2000-10-29'
+	t.is fy2001.getFiscalMonthInterval(2).end.toISODate(), '2000-12-02'
+	t.is fy2001.getFiscalMonthInterval(3).start.toISODate(), '2000-12-03'
+	t.is fy2001.getFiscalMonthInterval(3).end.toISODate(), '2000-12-30'
+	t.is fy2001.getFiscalMonthInterval(12).start.toISODate(), '2001-08-26'
+	t.is fy2001.getFiscalMonthInterval(12).end.toISODate(), '2001-09-29'
+	t.is fy2015.getFiscalMonthInterval(9).start.toISODate(), '2015-05-24'
+	t.is fy2015.getFiscalMonthInterval(9).end.toISODate(), '2015-06-27'
+	t.is fy2015.getFiscalMonthInterval(12).start.toISODate(), '2015-08-23'
+	t.is fy2015.getFiscalMonthInterval(12).end.toISODate(), '2015-10-03'
+
 
 test 'quarter end dates', (t) =>
 	# Dates to compare against are per the PDF in docs/
@@ -168,3 +185,19 @@ test 'quarter start dates', (t) =>
 		fy = new FiscalYear Number year
 		for date, month in monthStartDates
 			t.is fy.getQuarterStart(month + 1).toISODate(), date
+
+
+test 'quarter interval', (t) =>
+	# Dates to compare against are per the PDF in docs/
+	fy2004 = new FiscalYear 2004
+	fy2033 = new FiscalYear 2033
+	t.is fy2004.getQuarterInterval(1).start.toISODate(), '2003-09-28'
+	t.is fy2004.getQuarterInterval(1).end.toISODate(), '2003-12-27'
+	t.is fy2004.getQuarterInterval(2).start.toISODate(), '2003-12-28'
+	t.is fy2004.getQuarterInterval(2).end.toISODate(), '2004-03-27'
+	t.is fy2004.getQuarterInterval(4).start.toISODate(), '2004-06-27'
+	t.is fy2004.getQuarterInterval(4).end.toISODate(), '2004-10-02'
+	t.is fy2033.getQuarterInterval(3).start.toISODate(), '2033-04-03'
+	t.is fy2033.getQuarterInterval(3).end.toISODate(), '2033-07-02'
+	t.is fy2033.getQuarterInterval(4).start.toISODate(), '2033-07-03'
+	t.is fy2033.getQuarterInterval(4).end.toISODate(), '2033-10-01'
