@@ -1,6 +1,6 @@
 test = require 'ava'
 
-{ FiscalYear } = require '../'
+{ FiscalYear } = require '../src/index'
 
 
 test 'fiscal year end dates', (t) =>
@@ -115,3 +115,56 @@ test 'fiscal year number of weeks', (t) =>
 
 	for year in [1950..2049]
 		t.is new FiscalYear(year).getNumberOfWeeks(), (if year in yearsWith53Weeks then 53 else 52)
+
+
+test 'fiscal month end dates', (t) =>
+	# Dates to compare against are per the PDF in docs/
+	yearMonthEndDates =
+		'2001': ['2000-10-28', '2000-12-02', '2000-12-30', '2001-01-27', '2001-02-24', '2001-03-31', '2001-04-28', '2001-05-26', '2001-06-30', '2001-07-28', '2001-08-25', '2001-09-29']
+		'2004': ['2003-10-25', '2003-11-29', '2003-12-27', '2004-01-24', '2004-02-21', '2004-03-27', '2004-04-24', '2004-05-22', '2004-06-26', '2004-07-24', '2004-08-21', '2004-10-02']
+		'2020': ['2019-10-26', '2019-11-30', '2019-12-28', '2020-01-25', '2020-02-22', '2020-03-28', '2020-04-25', '2020-05-23', '2020-06-27', '2020-07-25', '2020-08-22', '2020-10-03']
+
+	for year, monthEndDates of yearMonthEndDates
+		fy = new FiscalYear Number year
+		for date, month in monthEndDates
+			t.is fy.getFiscalMonthEnd(month + 1).toISODate(), date
+
+
+test 'fiscal month start dates', (t) =>
+	# Dates to compare against are per the PDF in docs/
+	yearMonthStartDates =
+		'2001': ['2000-10-01', '2000-10-29', '2000-12-03', '2000-12-31', '2001-01-28', '2001-02-25', '2001-04-01', '2001-04-29', '2001-05-27', '2001-07-01', '2001-07-29', '2001-08-26']
+		'2004': ['2003-09-28', '2003-10-26', '2003-11-30', '2003-12-28', '2004-01-25', '2004-02-22', '2004-03-28', '2004-04-25', '2004-05-23', '2004-06-27', '2004-07-25', '2004-08-22']
+		'2020': ['2019-09-29', '2019-10-27', '2019-12-01', '2019-12-29', '2020-01-26', '2020-02-23', '2020-03-29', '2020-04-26', '2020-05-24', '2020-06-28', '2020-07-26', '2020-08-23']
+
+	for year, monthStartDates of yearMonthStartDates
+		fy = new FiscalYear Number year
+		for date, month in monthStartDates
+			t.is fy.getFiscalMonthStart(month + 1).toISODate(), date
+
+
+
+test 'quarter end dates', (t) =>
+	# Dates to compare against are per the PDF in docs/
+	yearQuarterEndDates =
+		'2001': ['2000-12-30', '2001-03-31', '2001-06-30', '2001-09-29']
+		'2004': ['2003-12-27', '2004-03-27', '2004-06-26', '2004-10-02']
+		'2020': ['2019-12-28', '2020-03-28', '2020-06-27', '2020-10-03']
+
+	for year, monthEndDates of yearQuarterEndDates
+		fy = new FiscalYear Number year
+		for date, month in monthEndDates
+			t.is fy.getQuarterEnd(month + 1).toISODate(), date
+
+
+test 'quarter start dates', (t) =>
+	# Dates to compare against are per the PDF in docs/
+	yearQuarterStartDates =
+		'2001': ['2000-10-01', '2000-12-31', '2001-04-01', '2001-07-01']
+		'2004': ['2003-09-28', '2003-12-28', '2004-03-28', '2004-06-27']
+		'2020': ['2019-09-29', '2019-12-29', '2020-03-29', '2020-06-28']
+
+	for year, monthStartDates of yearQuarterStartDates
+		fy = new FiscalYear Number year
+		for date, month in monthStartDates
+			t.is fy.getQuarterStart(month + 1).toISODate(), date
