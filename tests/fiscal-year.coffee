@@ -161,6 +161,14 @@ test 'fiscal month interval', (t) =>
 	t.is fy2015.getFiscalMonthInterval(12).end.toISODate(), '2015-10-03'
 
 
+test 'fiscal months array', (t) =>
+	months = new FiscalYear(2001).getFiscalMonths()
+	t.is months[0].start.toISODate(), '2000-10-01'
+	t.is months[0].end.toISODate(), '2000-10-28'
+	t.is months[11].start.toISODate(), '2001-08-26'
+	t.is months[11].end.toISODate(), '2001-09-29'
+
+
 test 'quarter end dates', (t) =>
 	# Dates to compare against are per the PDF in docs/
 	yearQuarterEndDates =
@@ -201,3 +209,13 @@ test 'quarter interval', (t) =>
 	t.is fy2033.getQuarterInterval(3).end.toISODate(), '2033-07-02'
 	t.is fy2033.getQuarterInterval(4).start.toISODate(), '2033-07-03'
 	t.is fy2033.getQuarterInterval(4).end.toISODate(), '2033-10-01'
+
+
+test 'quarters array', (t) =>
+	quarters = new FiscalYear(2004).getQuarters()
+	t.is quarters[0].start.toISODate(), '2003-09-28'
+	t.is quarters[0].end.toISODate(), '2003-12-27'
+	t.is quarters[1].start.toISODate(), '2003-12-28'
+	t.is quarters[1].end.toISODate(), '2004-03-27'
+	t.is quarters[3].start.toISODate(), '2004-06-27'
+	t.is quarters[3].end.toISODate(), '2004-10-02'

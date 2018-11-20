@@ -1,5 +1,5 @@
 { DateTime, Interval } = require 'luxon' # https://moment.github.io/luxon/index.html
-Holidays = require '@date/holidays' # https://github.com/elidoran/node-date-holidays
+Holidays = require '@date/holidays-us' # https://github.com/elidoran/node-date-holidays
 
 FiscalYearHelpers = require './fiscal-year-helpers'
 
@@ -117,6 +117,10 @@ module.exports = class FiscalYear
 		@cache.fiscalMonthInterval["#{month}"] = Interval.fromDateTimes @getFiscalMonthStart(month), @getFiscalMonthEnd(month)
 
 
+	getFiscalMonths: ->
+		[1..12].map (month) => @getFiscalMonthInterval month
+
+
 	_validateQuarter: (quarter) ->
 		unless quarter in [1, 2, 3, 4]
 			throw new Error 'Quarter must be an integer: 1 or 2 or 3 or 4'
@@ -155,3 +159,7 @@ module.exports = class FiscalYear
 		return @cache.quarterInterval["#{quarter}"] if @cache.quarterInterval["#{quarter}"]
 
 		@cache.quarterInterval["#{quarter}"] = Interval.fromDateTimes @getQuarterStart(quarter), @getQuarterEnd(quarter)
+
+
+	getQuarters: ->
+		[1..4].map (quarter) => @getQuarterInterval quarter
