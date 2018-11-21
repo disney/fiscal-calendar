@@ -1,4 +1,4 @@
-{ DateTime, Interval } = require 'luxon' # https://moment.github.io/luxon/index.html
+{ DateTime, Interval } = require 'luxon' # https://moment.github.io/luxon/
 Holidays = require '@date/holidays-us' # https://github.com/elidoran/node-date-holidays-us
 
 FiscalYearHelpers = require './fiscal-year-helpers'
@@ -55,6 +55,10 @@ module.exports = class FiscalYear
 	getFiscalYearInterval: ->
 		return @cache.fiscalYearInterval if @cache.fiscalYearInterval
 		@cache.fiscalYearInterval = Interval.fromDateTimes @getFiscalYearStart(), @getFiscalYearEnd()
+
+
+	contains: (dateTime) ->
+		@getFiscalYearInterval().contains dateTime
 
 
 	getNumberOfWeeks: ->
