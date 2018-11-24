@@ -169,7 +169,7 @@ test 'fiscal months array', (t) =>
 	t.is months[11].end.toISODate(), '2001-09-29'
 
 
-test 'quarter end dates', (t) =>
+test 'fiscal quarter end dates', (t) =>
 	# Dates to compare against are per the PDF in docs/
 	yearQuarterEndDates =
 		'2001': ['2000-12-30', '2001-03-31', '2001-06-30', '2001-09-29']
@@ -179,10 +179,10 @@ test 'quarter end dates', (t) =>
 	for year, monthEndDates of yearQuarterEndDates
 		fy = new FiscalYear Number year
 		for date, month in monthEndDates
-			t.is fy.getQuarterEnd(month + 1).toISODate(), date
+			t.is fy.getFiscalQuarterEnd(month + 1).toISODate(), date
 
 
-test 'quarter start dates', (t) =>
+test 'fiscal quarter start dates', (t) =>
 	# Dates to compare against are per the PDF in docs/
 	yearQuarterStartDates =
 		'2001': ['2000-10-01', '2000-12-31', '2001-04-01', '2001-07-01']
@@ -192,27 +192,27 @@ test 'quarter start dates', (t) =>
 	for year, monthStartDates of yearQuarterStartDates
 		fy = new FiscalYear Number year
 		for date, month in monthStartDates
-			t.is fy.getQuarterStart(month + 1).toISODate(), date
+			t.is fy.getFiscalQuarterStart(month + 1).toISODate(), date
 
 
-test 'quarter interval', (t) =>
+test 'fiscal quarter interval', (t) =>
 	# Dates to compare against are per the PDF in docs/
 	fy2004 = new FiscalYear 2004
 	fy2033 = new FiscalYear 2033
-	t.is fy2004.getQuarterInterval(1).start.toISODate(), '2003-09-28'
-	t.is fy2004.getQuarterInterval(1).end.toISODate(), '2003-12-27'
-	t.is fy2004.getQuarterInterval(2).start.toISODate(), '2003-12-28'
-	t.is fy2004.getQuarterInterval(2).end.toISODate(), '2004-03-27'
-	t.is fy2004.getQuarterInterval(4).start.toISODate(), '2004-06-27'
-	t.is fy2004.getQuarterInterval(4).end.toISODate(), '2004-10-02'
-	t.is fy2033.getQuarterInterval(3).start.toISODate(), '2033-04-03'
-	t.is fy2033.getQuarterInterval(3).end.toISODate(), '2033-07-02'
-	t.is fy2033.getQuarterInterval(4).start.toISODate(), '2033-07-03'
-	t.is fy2033.getQuarterInterval(4).end.toISODate(), '2033-10-01'
+	t.is fy2004.getFiscalQuarterInterval(1).start.toISODate(), '2003-09-28'
+	t.is fy2004.getFiscalQuarterInterval(1).end.toISODate(), '2003-12-27'
+	t.is fy2004.getFiscalQuarterInterval(2).start.toISODate(), '2003-12-28'
+	t.is fy2004.getFiscalQuarterInterval(2).end.toISODate(), '2004-03-27'
+	t.is fy2004.getFiscalQuarterInterval(4).start.toISODate(), '2004-06-27'
+	t.is fy2004.getFiscalQuarterInterval(4).end.toISODate(), '2004-10-02'
+	t.is fy2033.getFiscalQuarterInterval(3).start.toISODate(), '2033-04-03'
+	t.is fy2033.getFiscalQuarterInterval(3).end.toISODate(), '2033-07-02'
+	t.is fy2033.getFiscalQuarterInterval(4).start.toISODate(), '2033-07-03'
+	t.is fy2033.getFiscalQuarterInterval(4).end.toISODate(), '2033-10-01'
 
 
-test 'quarters array', (t) =>
-	quarters = new FiscalYear(2004).getQuarters()
+test 'fiscal quarters array', (t) =>
+	quarters = new FiscalYear(2004).getFiscalQuarters()
 	t.is quarters[0].start.toISODate(), '2003-09-28'
 	t.is quarters[0].end.toISODate(), '2003-12-27'
 	t.is quarters[1].start.toISODate(), '2003-12-28'

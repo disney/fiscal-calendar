@@ -1,7 +1,7 @@
 { DateTime, Interval } = require 'luxon' # https://moment.github.io/luxon/
 Holidays = require '@date/holidays-us' # https://github.com/elidoran/node-date-holidays-us
 
-FiscalYearHelpers = require './fiscal-year-helpers'
+{ nearestSaturday } = require './fiscal-year-helpers'
 
 
 module.exports = class FiscalYear
@@ -24,14 +24,14 @@ module.exports = class FiscalYear
 			fiscalMonthInterval: {}
 			fiscalMonthStart: {}
 			fiscalMonthEnd: {}
-			quarterInterval: {}
-			quarterStart: {}
-			quarterEnd: {}
+			fiscalQuarterInterval: {}
+			fiscalQuarterStart: {}
+			fiscalQuarterEnd: {}
 
 
 	getFiscalYearEnd: ->
 		return @cache.fiscalYearEnd if @cache.fiscalYearEnd
-		@cache.fiscalYearEnd = FiscalYearHelpers.nearestSaturday(DateTime.fromObject
+		@cache.fiscalYearEnd = nearestSaturday(DateTime.fromObject
 			year: @fiscalYear
 			month: 9 # September
 			day: 30
@@ -40,7 +40,7 @@ module.exports = class FiscalYear
 
 	getPreviousFiscalYearEnd: ->
 		return @cache.previousFiscalYearEnd if @cache.previousFiscalYearEnd
-		@cache.previousFiscalYearEnd = FiscalYearHelpers.nearestSaturday(DateTime.fromObject
+		@cache.previousFiscalYearEnd = nearestSaturday(DateTime.fromObject
 			year: @fiscalYear - 1
 			month: 9 # September
 			day: 30
@@ -130,43 +130,44 @@ module.exports = class FiscalYear
 			throw new Error 'Quarter must be an integer: 1 or 2 or 3 or 4'
 
 
-	getQuarterEnd: (quarter) ->
+	getFiscalQuarterEnd: (quarter) ->
 		@_validateQuarter quarter
-		return @cache.quarterEnd["#{quarter}"] if @cache.quarterEnd["#{quarter}"]
+		return @cache.fiscalQuarterEnd["#{quarter}"] if @cache.fiscalQuarterEnd["#{quarter}"]
 
 		# See README.md for an explanation of Disney’s fiscal months, which have set numbers of weeks (mostly)
 		# Quarters are always three of these fiscal months
+		# Disney’s quarters differ from Luxon’s quarters, which follow calendar months
 		switch quarter
 			when 1
-				@cache.quarterEnd["#{quarter}"] = @getFiscalMonthEnd 3
+				@cache.fiscalQuarterEnd["#{quarter}"] = @getFiscalMonthEnd 3
 			when 2
-				@cache.quarterEnd["#{quarter}"] = @getFiscalMonthEnd 6
+				@cache.fiscalQuarterEnd["#{quarter}"] = @getFiscalMonthEnd 6
 			when 3
-				@cache.quarterEnd["#{quarter}"] = @getFiscalMonthEnd 9
+				@cache.fiscalQuarterEnd["#{quarter}"] = @getFiscalMonthEnd 9
 			when 4
-				@cache.quarterEnd["#{quarter}"] = @getFiscalYearEnd()
+				@cache.fiscalQuarterEnd["#{quarter}"] = @getFiscalYearEnd()
 
 
-	getQuarterStart: (quarter) ->
+	getFiscalQuarterStart: (quarter) ->
 		@_validateQuarter quarter
-		return @cache.quarterStart["#{quarter}"] if @cache.quarterStart["#{quarter}"]
+		return @cache.fiscalQuarterStart["#{quarter}"] if @cache.fiscalQuarterStart["#{quarter}"]
 
-		@cache.quarterStart["#{quarter}"] = switch quarter
+		@cache.fiscalQuarterStart["#{quarter}"] = switch quarter
 			when 1
 				@getFiscalYearStart()
 			else
-				@getQuarterEnd(quarter - 1).plus days: 1
+				@getFiscalQuarterEnd(quarter - 1).plus days: 1
 
 
-	getQuarterInterval: (quarter) ->
+	getFiscalQuarterInterval: (quarter) ->
 		@_validateQuarter quarter
-		return @cache.quarterInterval["#{quarter}"] if @cache.quarterInterval["#{quarter}"]
+		return @cache.fiscalQuarterInterval["#{quarter}"] if @cache.fiscalQuarterInterval["#{quarter}"]
 
-		@cache.quarterInterval["#{quarter}"] = Interval.fromDateTimes @getQuarterStart(quarter), @getQuarterEnd(quarter)
+		@cache.fiscalQuarterInterval["#{quarter}"] = Interval.fromDateTimes @getFiscalQuarterStart(quarter), @getFiscalQuarterEnd(quarter)
 
 
-	getQuarters: ->
-		[1..4].map (quarter) => @getQuarterInterval quarter
+	getFiscalQuarters: ->
+		[1..4].map (quarter) => @getFiscalQuarterInterval quarter
 
 
 	getHolidays: ->
