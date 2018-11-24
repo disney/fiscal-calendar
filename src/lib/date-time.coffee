@@ -33,4 +33,12 @@ Object.defineProperty DateTime.prototype, 'fiscalQuarter',
 				return @c.fiscalQuarter = quarter
 
 
+# For a particular DateTime, what fiscal month is it in?
+Object.defineProperty DateTime.prototype, 'fiscalMonth',
+	get: ->
+		return @c.fiscalMonth if @c.fiscalMonth
+		fiscalYear = @getFiscalYearClass()
+		for month in [1..12]
+			if fiscalYear.getFiscalMonthInterval(month).contains(@)
+				return @c.fiscalMonth = month
 module.exports = DateTime

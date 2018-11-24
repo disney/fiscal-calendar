@@ -27,3 +27,16 @@ test 'fiscal quarter', (t) =>
 	t.is DateTime.fromISO('2004-06-27').fiscalQuarter, 4
 	t.is DateTime.fromISO('2004-10-02').fiscalQuarter, 4
 	t.is DateTime.fromISO('2004-10-03').fiscalQuarter, 1
+
+
+test 'fiscal month', (t) =>
+	t.is DateTime.fromISO('2000-10-01').fiscalMonth, 1
+	t.is DateTime.fromISO('2000-12-30').fiscalMonth, 3
+	t.is DateTime.fromISO('2000-12-31').fiscalMonth, 4
+	t.is DateTime.fromISO('2001-01-01').fiscalMonth, 4
+	t.is DateTime.fromISO('2001-03-31').fiscalMonth, 6
+	t.is DateTime.fromISO('2001-04-01').fiscalMonth, 7
+	t.is DateTime.fromISO('2004-06-01').fiscalMonth, 9
+	t.is DateTime.fromISO('2004-06-27').fiscalMonth, 10
+	t.is DateTime.fromISO('2004-10-02').fiscalMonth, 12
+	t.is DateTime.fromISO('2004-10-03').fiscalMonth, 1
