@@ -111,7 +111,7 @@ module.exports = class FiscalYear
 			when 1
 				@getFiscalYearStart()
 			else
-				@getFiscalMonthEnd(month - 1).plus days: 1
+				@getFiscalMonthEnd(month - 1).plus milliseconds: 1
 
 
 	getFiscalMonthInterval: (month) ->
@@ -156,7 +156,7 @@ module.exports = class FiscalYear
 			when 1
 				@getFiscalYearStart()
 			else
-				@getFiscalQuarterEnd(quarter - 1).plus days: 1
+				@getFiscalQuarterEnd(quarter - 1).plus milliseconds: 1
 
 
 	getFiscalQuarterInterval: (quarter) ->

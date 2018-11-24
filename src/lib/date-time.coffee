@@ -11,15 +11,26 @@ getFiscalYear = (year) ->
 	fiscalYearsCache[year] = new FiscalYear year
 
 
-# Cache getter values so that we don’t repeat calculations
-DateTime.prototype.fiscalDataCache = {}
-
-
 # For a particular DateTime, what fiscal year is it in?
 Object.defineProperty DateTime.prototype, 'fiscalYear',
 	get: ->
-		return @fiscalDataCache.fiscalYear if @fiscalDataCache.fiscalYear
-		if getFiscalYear(@year).contains @ then @year else @year + 1
+		return @c.fiscalYear if @c.fiscalYear
+		@c.fiscalYear = if getFiscalYear(@year).contains @ then @year else @year + 1
+
+
+# Provide full access to the methods available for this DateTime’s fiscal year
+DateTime.prototype.getFiscalYearClass = ->
+	getFiscalYear @fiscalYear
+
+
+# For a particular DateTime, what fiscal quarter is it in?
+Object.defineProperty DateTime.prototype, 'fiscalQuarter',
+	get: ->
+		return @c.fiscalQuarter if @c.fiscalQuarter
+		fiscalYear = @getFiscalYearClass()
+		for quarter in [1..4]
+			if fiscalYear.getFiscalQuarterInterval(quarter).contains(@)
+				return @c.fiscalQuarter = quarter
 
 
 module.exports = DateTime
