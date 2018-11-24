@@ -1,6 +1,7 @@
 { DateTime } = require 'luxon' # https://moment.github.io/luxon/
 
 FiscalYear = require './fiscal-year'
+{ normalizeUnit } = require './fiscal-year-helpers'
 
 
 # Cache fiscal years so that we don’t repeat calculations
@@ -41,4 +42,36 @@ Object.defineProperty DateTime.prototype, 'fiscalMonth',
 		for month in [1..12]
 			if fiscalYear.getFiscalMonthInterval(month).contains(@)
 				return @c.fiscalMonth = month
+
+
+# Extend `startOf` and `endOf` to include fiscal years, quarters and months
+originalStartOf = DateTime.prototype.startOf
+# Based on https://github.com/moment/luxon/blob/af1c6865ee87156261f31fd488eccb70343c7234/src/datetime.js#L1313-L1354
+DateTime.prototype.startOf = (unit) ->
+	return @ unless @isValid
+	switch normalizeUnit unit
+		when 'fiscal years'
+			return getFiscalYear(@fiscalYear).getFiscalYearStart()
+		when 'fiscal quarters'
+			return getFiscalYear(@fiscalYear).getFiscalQuarterStart(@fiscalQuarter)
+		when 'fiscal months'
+			return getFiscalYear(@fiscalYear).getFiscalMonthStart(@fiscalMonth)
+		else
+			originalStartOf.call @, unit
+
+
+originalEndOf = DateTime.prototype.endOf
+DateTime.prototype.endOf = (unit) ->
+	return @ unless @isValid
+	switch normalizeUnit unit
+		when 'fiscal years'
+			return getFiscalYear(@fiscalYear).getFiscalYearEnd()
+		when 'fiscal quarters'
+			return getFiscalYear(@fiscalYear).getFiscalQuarterEnd(@fiscalQuarter)
+		when 'fiscal months'
+			return getFiscalYear(@fiscalYear).getFiscalMonthEnd(@fiscalMonth)
+		else
+			originalEndOf.call @, unit
+
+
 module.exports = DateTime

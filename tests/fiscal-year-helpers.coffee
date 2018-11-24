@@ -13,3 +13,11 @@ test 'nearest Saturday', (t) =>
 	t.is FiscalYearHelpers.nearestSaturday(DateTime.fromISO('2000-01-05')).toISODate(), '2000-01-08'
 	t.is FiscalYearHelpers.nearestSaturday(DateTime.fromISO('2000-01-06')).toISODate(), '2000-01-08'
 	t.is FiscalYearHelpers.nearestSaturday(DateTime.fromISO('2000-01-07')).toISODate(), '2000-01-08'
+
+
+test 'normalized unit', (t) =>
+	t.is FiscalYearHelpers.normalizeUnit('Fiscal Year'), 'fiscal years'
+	t.is FiscalYearHelpers.normalizeUnit('Fiscal Years'), 'fiscal years'
+	t.is FiscalYearHelpers.normalizeUnit('Fiscal Quarter'), 'fiscal quarters'
+	t.is FiscalYearHelpers.normalizeUnit('Fiscal Month'), 'fiscal months'
+	t.throws -> FiscalYearHelpers.normalizeUnit 'nonexistent unit'
