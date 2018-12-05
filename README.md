@@ -2,6 +2,77 @@
 
 This is a Node module for working with dates and intervals related to the Disney fiscal calendar. It is inspired by the [`Disney::Fiscal` Ruby gem](https://gitlab.wdi.disney.com/wdi-business-tech/rubygems/disney-fiscal) and uses the JavaScript date library [Luxon](https://moment.github.io/luxon/).
 
+## Quickstart
+
+The `DateTime` class exported by this package is a Luxon [DateTime](https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html) with a few extensions for fiscal years, quarters and months:
+
+```js
+const { DateTime } = require('disney-fiscal-calendar');
+
+const dt = DateTime.fromISO('2001-01-01');
+
+dt.fiscalYear // 2001
+dt.fiscalQuarter // 2
+dt.fiscalMonth // 4
+
+dt.fiscalYearShort // 'FY01'
+dt.fiscalYearLong // 'FY 2001'
+dt.fiscalQuarterString // 'Q2'
+dt.fiscalYearQuarterShort // 'FY01Q2'
+dt.fiscalYearQuarterLong // 'FY 2001-Q2'
+dt.fiscalMonthNumericPadded // '04'
+dt.fiscalMonthNameShort // 'Jan'
+dt.fiscalMonthNameLong // 'January'
+dt.fiscalYearMonthNumericShort // 'FY01-04'
+dt.fiscalYearMonthNumericLong // 'FY 2001-04'
+dt.fiscalYearMonthNameShort // 'FY01-Jan'
+dt.fiscalYearMonthNameLong // 'FY 2001-January'
+
+// .startOf returns a DateTime
+dt.startOf('fiscal year').toISODate() // '2000-10-01'
+dt.startOf('fiscal quarter').toISODate() // '2000-12-31'
+dt.startOf('fiscal month').toISODate() // '2000-12-31'
+
+// .endOf returns a DateTime
+dt.endOf('fiscal year').toISODate() // '2001-09-29'
+dt.endOf('fiscal quarter').toISODate() // '2001-03-31'
+dt.endOf('fiscal month').toISODate() // '2001-01-27'
+```
+
+You can also use the `FiscalYear` class to work with the fiscal calendar. The `*Interval` methods return Luxon [Interval](https://moment.github.io/luxon/docs/class/src/interval.js~Interval.html) objects.
+
+```js
+const { FiscalYear } = require('disney-fiscal-calendar');
+
+const fy = new FiscalYear(2020);
+
+// *Start/End returns a DateTime
+fy.getFiscalYearStart().toISODate() // '2019-09-29'
+fy.getFiscalYearEnd().toISODate() // '2020-10-03'
+fy.getFiscalQuarterStart(4).toISODate() // '2020-06-28'
+fy.getFiscalQuarterEnd(4).toISODate() // '2020-10-03'
+fy.getFiscalMonthStart(6).toISODate() // '2020-02-23'
+fy.getFiscalMonthEnd(6).toISODate() // '2020-03-28'
+
+// *Interval returns an Interval
+fy.getFiscalYearInterval().start.toISODate() // '2019-09-29'
+fy.getFiscalYearInterval().end.toISODate() // '2020-10-03'
+fy.getFiscalQuarterInterval(4).start.toISODate() // '2020-06-28'
+fy.getFiscalQuarterInterval(4).end.toISODate() // '2020-10-03'
+fy.getFiscalMonthInterval(6).start.toISODate() // '2020-02-23'
+fy.getFiscalMonthInterval(6).end.toISODate() // '2020-03-28'
+
+// getFiscalQuarters and getFiscalMonths return arrays of Intervals
+fy.getFiscalQuarters()[3].start.toISODate() // '2020-06-28'
+fy.getFiscalMonths()[6].start.toISODate() // '2020-03-29'
+
+fy.getNumberOfWeeks() // 53
+
+// getHolidays returns an array of DateTimes
+fy.getHolidays().map(holiday => holiday.toISODate())
+// ['2020-01-01', '2020-01-20', '2020-02-17', '2020-05-25', '2020-07-03', '2020-09-07', '2020-11-26', '2020-11-27', '2020-12-25' ]
+```
+
 ## About the fiscal calendar
 
 Per The Walt Disney Company’s [2017 annual report to the SEC](https://www.thewaltdisneycompany.com/wp-content/uploads/2017-Annual-Report.pdf):
