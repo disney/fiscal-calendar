@@ -1,6 +1,6 @@
 {
   "name": "disney-fiscal-calendar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A library for working with Disney fiscal calendar dates",
   "author": "Geoffrey Booth <geoffrey.booth@disney.com>",
   "license": "ISC",
@@ -12,7 +12,9 @@
     "url": "git@gitlab-ssh.wdi.disney.com:libraries/disney-fiscal-calendar.git"
   },
   "main": "dist/index.js",
-  "files": ["dist/*"],
+  "files": [
+    "dist/*"
+  ],
   "scripts": {
     "build": "npx coffee --bare --output ./dist ./src",
     "test": "ava",
@@ -21,11 +23,11 @@
   },
   "dependencies": {
     "@date/holidays-us": "^0.4.0",
-    "coffeescript": "^2.3.2",
-    "luxon": "^1.6.2"
+    "coffeescript": "^2.4.1",
+    "luxon": "^1.12.1"
   },
   "devDependencies": {
-    "ava": "1.0.0-rc.2"
+    "ava": "1.4.1"
   },
   "ava": {
     "compileEnhancements": false,

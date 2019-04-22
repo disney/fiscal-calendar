@@ -4,6 +4,12 @@ This is a Node module for working with dates and intervals related to the Disney
 
 ## Quickstart
 
+Install the package from WDI Nexus:
+
+```bash
+npm install https://nexus.wdi.cloud/content/repositories/npm-public/disney-fiscal-calendar/-/disney-fiscal-calendar-1.0.1.tgz
+```
+
 The `DateTime` class exported by this package is a Luxon [DateTime](https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html) with a few extensions for fiscal years, quarters and months:
 
 ```js
@@ -112,7 +118,7 @@ So while fiscal years end on the Saturday closest to September 30, fiscal months
 
 These month lengths are from a [spreadsheet on Backlot](https://backlot.disney.com/docs/DOC-77745), [included in this repo](./docs/TWDC%20Fiscal%20Calendar%20through%202099.xlsx).
 
-To determine the number of weeks in a fiscal year, take the number of days in the fiscal year (found by subtracting last year’s fiscal year end date from this year’s fiscal year end date) and divide by 7, then round to the nearest integer. For example:
+To determine the number of weeks in a fiscal year, take the number of days in the fiscal year (found by subtracting last year’s fiscal year end date from this year’s fiscal year end date) and divide by 7. For example:
 
 - FY 2004 ended on 2004-10-02 and FY 2003 ended on 2003-09-27, so 2004-10-02 minus 2003-09-27 = 371 days divided by 7 = 53 weeks.
 - FY 2005 ended on 2005-10-01 and FY 2004 ended on 2004-10-02, so 2005-10-01 minus 2004-10-02 = 364 days divided by 7 = 52 weeks.
