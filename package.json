@@ -1,6 +1,6 @@
 {
   "name": "disney-fiscal-calendar",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A library for working with Disney fiscal calendar dates",
   "author": "Geoffrey Booth <geoffrey.booth@disney.com>",
   "license": "ISC",
@@ -16,18 +16,25 @@
     "dist/*"
   ],
   "scripts": {
-    "build": "npx coffee --bare --output ./dist ./src",
+    "build": "npx coffee --bare --transpile --output ./dist ./src",
     "test": "ava",
     "test:watch": "ava --watch",
     "prepare": "npm run build"
   },
   "dependencies": {
     "@date/holidays-us": "^0.4.0",
-    "coffeescript": "^2.4.1",
     "luxon": "^1.12.1"
   },
   "devDependencies": {
-    "ava": "1.4.1"
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "ava": "1.4.1",
+    "coffeescript": "^2.4.1"
+  },
+  "babel": {
+    "presets": [
+      "@babel/env"
+    ]
   },
   "ava": {
     "compileEnhancements": false,
