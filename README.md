@@ -4,10 +4,10 @@ This is a Node module for working with dates and intervals related to the Disney
 
 ## Quickstart
 
-Install the package from WDI Nexus:
+Install the package from npm:
 
 ```bash
-npm install https://nexus.wdi.cloud/content/repositories/npm-public/disney-fiscal-calendar/-/disney-fiscal-calendar-1.0.1.tgz
+npm install disney-fiscal-calendar
 ```
 
 The `DateTime` class exported by this package is a Luxon [DateTime](https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html) with a few extensions for fiscal years, quarters and months:
