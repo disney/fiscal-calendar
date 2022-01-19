@@ -13,9 +13,9 @@ npm install disney-fiscal-calendar
 The `DateTime` class exported by this package is a Luxon [DateTime](https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html) with a few extensions for fiscal years, quarters and months:
 
 ```js
-const { DateTime } = require('disney-fiscal-calendar');
+import { DateTime } from 'disney-fiscal-calendar'
 
-const dt = DateTime.fromISO('2001-01-01');
+const dt = DateTime.fromISO('2001-01-01')
 
 dt.fiscalYear // 2001
 dt.fiscalQuarter // 2
@@ -48,9 +48,9 @@ dt.endOf('fiscal month').toISODate() // '2001-01-27'
 You can also use the `FiscalYear` class to work with the fiscal calendar. The `*Interval` methods return Luxon [Interval](https://moment.github.io/luxon/docs/class/src/interval.js~Interval.html) objects.
 
 ```js
-const { FiscalYear } = require('disney-fiscal-calendar');
+import { FiscalYear } from 'disney-fiscal-calendar'
 
-const fy = new FiscalYear(2020);
+const fy = new FiscalYear(2020)
 
 // *Start/End returns a DateTime
 fy.getFiscalYearStart().toISODate() // '2019-09-29'

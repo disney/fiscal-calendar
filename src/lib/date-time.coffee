@@ -1,7 +1,8 @@
-{ DateTime, Info } = require 'luxon' # https://moment.github.io/luxon/
+import { DateTime, Info } from 'luxon' # https://moment.github.io/luxon/
 
-FiscalYear = require './fiscal-year'
-{ normalizeUnit } = require './fiscal-year-helpers'
+
+import { FiscalYear } from './fiscal-year.js'
+import { normalizeUnit } from './fiscal-year-helpers.js'
 
 
 #
@@ -174,4 +175,4 @@ DateTime.prototype.endOf = (unit) ->
 			originalEndOf.call @, unit
 
 
-module.exports = DateTime
+export { DateTime }

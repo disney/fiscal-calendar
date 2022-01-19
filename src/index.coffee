@@ -1,8 +1,2 @@
-DateTime = require './lib/date-time'
-FiscalYear = require './lib/fiscal-year'
-
-
-module.exports = {
-	DateTime
-	FiscalYear
-}
+export { DateTime } from './lib/date-time.js'
+export { FiscalYear } from './lib/fiscal-year.js'

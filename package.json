@@ -8,14 +8,15 @@
     "type": "git",
     "url": "https://gitlab.disney.com/Geoffrey.Booth/disney-fiscal-calendar.git"
   },
-  "main": "dist/index.js",
+  "type": "module",
+  "exports": "./dist/index.js",
   "files": [
     "dist/*"
   ],
   "scripts": {
-    "build": "npx coffee --bare --transpile --output ./dist ./src",
+    "build": "coffee --bare --no-header --output ./dist ./src",
     "test": "ava",
-    "test:watch": "ava --watch",
+    "dev": "coffee --bare --no-header --output ./dist --watch ./src & ava --watch",
     "prepare": "npm run build"
   },
   "dependencies": {
@@ -23,15 +24,8 @@
     "luxon": "^1.12.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
     "ava": "1.4.1",
     "coffeescript": "^2.4.1"
-  },
-  "babel": {
-    "presets": [
-      "@babel/env"
-    ]
   },
   "ava": {
     "compileEnhancements": false,
@@ -43,9 +37,6 @@
     ],
     "files": [
       "tests/**/*.coffee"
-    ],
-    "sources": [
-      "src/**/*.coffee"
     ]
   }
 }

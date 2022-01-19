@@ -1,10 +1,10 @@
-{ DateTime, Interval } = require 'luxon' # https://moment.github.io/luxon/
-Holidays = require '@date/holidays-us' # https://github.com/elidoran/node-date-holidays-us
+import { DateTime, Interval } from 'luxon' # https://moment.github.io/luxon/
+import Holidays from '@date/holidays-us' # https://github.com/elidoran/node-date-holidays-us
 
-{ nearestSaturday } = require './fiscal-year-helpers'
+import { nearestSaturday } from './fiscal-year-helpers.js'
 
 
-module.exports = class FiscalYear
+export class FiscalYear
 	constructor: (input) ->
 		if typeof input is 'string' and /^\d{4}$/.test input # Input like '2001'
 			@fiscalYear = Number input
