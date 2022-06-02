@@ -1,4 +1,4 @@
-# Disney Fiscal Calendar
+# Fiscal Calendar
 
 This is a Node module for working with dates and intervals related to the Disney fiscal calendar. It extends the JavaScript date library [Luxon](https://moment.github.io/luxon/).
 
@@ -7,7 +7,7 @@ This is a Node module for working with dates and intervals related to the Disney
 Install the package from npm:
 
 ```bash
-npm install disney-fiscal-calendar
+npm install https://github.com/disney/fiscal-calendar
 ```
 
 The `DateTime` class exported by this package is a Luxon [DateTime](https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html) with a few extensions for fiscal years, quarters and months:

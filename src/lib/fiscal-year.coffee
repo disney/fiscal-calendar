@@ -75,7 +75,7 @@ export class FiscalYear
 		@_validateMonth month
 		return @cache.fiscalMonthEnd["#{month}"] if @cache.fiscalMonthEnd["#{month}"]
 
-		# See README.md for an explanation of Disney’s fiscal months, which have set numbers of weeks (mostly)
+		# See README.md for an explanation of the fiscal months, which have set numbers of weeks (mostly)
 		@cache.fiscalMonthEnd["#{month}"] = switch month
 			when 1 # Month 1, mostly overlapping with October, is always 4 weeks long
 				@getPreviousFiscalYearEnd().plus weeks: 4
@@ -134,9 +134,9 @@ export class FiscalYear
 		@_validateQuarter quarter
 		return @cache.fiscalQuarterEnd["#{quarter}"] if @cache.fiscalQuarterEnd["#{quarter}"]
 
-		# See README.md for an explanation of Disney’s fiscal months, which have set numbers of weeks (mostly)
+		# See README.md for an explanation of the fiscal months, which have set numbers of weeks (mostly)
 		# Quarters are always three of these fiscal months
-		# Disney’s quarters differ from Luxon’s quarters, which follow calendar months
+		# Fiscal quarters differ from Luxon’s quarters, which follow calendar months
 		switch quarter
 			when 1
 				@cache.fiscalQuarterEnd["#{quarter}"] = @getFiscalMonthEnd 3
