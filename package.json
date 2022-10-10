@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.disney.com/Geoffrey.Booth/disney-fiscal-calendar.git"
+    "url": "git@github.com:disney/fiscal-calendar.git"
   },
   "type": "module",
   "exports": "./dist/index.js",
