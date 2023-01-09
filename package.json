@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@date/holidays-us": "^0.4.0",
-    "luxon": "^2.3.0"
+    "luxon": "^2.5.2"
   },
   "devDependencies": {
     "ava": "4.0.1",
