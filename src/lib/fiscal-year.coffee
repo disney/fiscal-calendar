@@ -1,5 +1,5 @@
 import { DateTime, Interval } from 'luxon' # https://moment.github.io/luxon/
-import Holidays from '@date/holidays-us' # https://github.com/elidoran/node-date-holidays-us
+import Holidays from '@18f/us-federal-holidays' # https://github.com/18F/us-federal-holidays
 
 import { nearestSaturday } from './fiscal-year-helpers.js'
 
@@ -173,14 +173,30 @@ export class FiscalYear
 	getHolidays: ->
 		return @cache.holidays if @cache.holidays
 
+		# Company core holidays per HR
+		companySupportedUSHolidays = new Set([
+			'New Year\'s Day'
+			'Birthday of Martin Luther King, Jr.'
+			'Washington\'s Birthday'
+			'Memorial Day'
+			'Juneteenth National Independence Day'
+			'Independence Day'
+			'Labor Day'
+			'Thanksgiving Day'
+			# Day after Thanksgiving handled below
+			'Christmas Day'
+		])
+
+		start = @getFiscalYearStart().toJSDate()
+		end = @getFiscalYearEnd().toJSDate()
+		usHolidays = Holidays.inRange(start, end, { shiftSaturdayHolidays: yes, shiftSundayHolidays: yes })
+
 		holidays = []
-		# https://github.com/elidoran/node-date-holidays-us#api-generators
-		for day in ['newYearsDay', 'martinLutherKingDay', 'presidentsDay', 'memorialDay', 'independenceDay', 'laborDay', 'thanksgiving', 'dayAfterThankgsiving', 'christmas']
-			if day is 'dayAfterThankgsiving'
-				date = holidays[6].plus days: 1
-			else
-				date = Holidays[day](@fiscalYear)
-				date = date.observed if date.observed
-				date = DateTime.fromJSDate date
-			holidays.push date
+		# https://github.com/18F/us-federal-holidays#readme
+		for { name, date } in usHolidays
+			holiday = DateTime.fromJSDate date
+			holidays.push holiday if companySupportedUSHolidays.has name
+			if name is 'Thanksgiving Day'
+				holidays.push holiday.plus days: 1
+
 		@cache.holidays = holidays

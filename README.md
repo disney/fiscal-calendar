@@ -128,6 +128,7 @@ Per HR, the company Core Holidays are:
 - Martin Luther King, Jr. Day
 - President’s Day
 - Memorial Day
+- Juneteenth
 - Independence Day
 - Labor Day
 - Thanksgiving Day
