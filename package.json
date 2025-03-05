@@ -1,6 +1,6 @@
 {
   "name": "fiscal-calendar",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A library for working with Disney fiscal calendar dates",
   "author": "Geoffrey Booth <geoffrey.booth@disney.com>",
   "license": "MIT",
@@ -20,7 +20,7 @@
     "prepare": "npm run build"
   },
   "dependencies": {
-    "@date/holidays-us": "^0.4.0",
+    "@18f/us-federal-holidays": "^4.0.0",
     "luxon": "^2.5.2"
   },
   "devDependencies": {
